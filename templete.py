@@ -7,13 +7,15 @@ logging.basicConfig(level=logging.INFO, format='[%(asctime)s]: %(message)s')
 list_of_files = [
     f"src/__init__.py",
     f"src/components/__init__py",
-    f"src/pipeline/__init__py",
+    f"src/pipelines/__init__py",
+    f"src/step/__init__py",
     f"src/exception.py",
     f"src/logger.py",
     f"src/utils.py",
     f"notebook/trial.ipynb",
     f"templates/index.html",
     "app.py",
+    "run_pipeline.py",
     "setup.py",
     "requirements.txt"
 ]

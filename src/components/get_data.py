@@ -1,6 +1,7 @@
 import os 
 import sys
 import pandas as pd
+from typing import Tuple
 from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 
@@ -18,7 +19,7 @@ class GetData:
     def __init__(self):
         self.pull_data = PullData()
     
-    def initiate_data(self, path: str):
+    def initiate_data(self, path: str)-> Tuple[str, str]:
         """
         Get data from the source and divide the data into train and test file
         """
@@ -26,7 +27,7 @@ class GetData:
         try:
             data = pd.read_csv(path)
             logging.info("Read data as DataFrame")
-            os.makedirs(os.path.dirname(self.pull_data.raw_data_path))
+            os.makedirs(os.path.dirname(self.pull_data.raw_data_path), exist_ok=True)
             data.to_csv(self.pull_data.raw_data_path, index=False, header=True)
 
             logging.info("Split data into train and test then save it")
@@ -34,6 +35,8 @@ class GetData:
             train_data.to_csv(self.pull_data.train_data_path, index=False, header=True)
             test_data.to_csv(self.pull_data.test_data_path, index=False, header=True)
             logging.info("Pulling data is completed")
+
+            return self.pull_data.train_data_path, self.pull_data.test_data_path
 
         except Exception as e:
             raise CustomException(e, sys)
