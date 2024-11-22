@@ -54,6 +54,7 @@ class DataTransformation(DataStrategy):
                 ]
             )
 
+
             # Read train and test data from file paths
             logging.info(f"Reading train data from {train_data_path}")
             train_df = pd.read_csv(train_data_path)
@@ -63,17 +64,43 @@ class DataTransformation(DataStrategy):
             # Check if the data is loaded properly
             if train_df.empty or test_df.empty:
                 raise CustomException(f"Error: Train or test data is empty from the provided path.", sys)
+            
+
+            target_column = 'GPA'
+
+            logging.info("Seperated input and target features for training and testing dataset")
+            input_feature_train_df = train_df.drop(columns=[target_column], axis=1)
+            target_feature_train_df = train_df[target_column]
+            input_feature_test_df = test_df.drop(columns=[target_column], axis=1)
+            target_feature_test_df = test_df[target_column]
+
 
             logging.info("Transforming train and test data")
-            train_data_processed = preprocessor.fit_transform(train_df)
-            test_data_processed = preprocessor.transform(test_df)
+            train_data_processed = preprocessor.fit_transform(input_feature_train_df)
+            test_data_processed = preprocessor.transform(input_feature_test_df)
+
+            logging.info("Combining transformed data with target column")
+            train_arr = np.c_[train_data_processed, np.array(target_feature_train_df)]
+            test_arr = np.c_[test_data_processed, np.array(target_feature_test_df)]
 
             logging.info("Saving preprocessor to artifacts")
             save_object(os.path.join('artifacts', 'preprocessor.pkl'), preprocessor)
 
-            return train_data_processed, test_data_processed, preprocessor
+            return train_arr, test_arr, preprocessor
 
         except Exception as e:
             CustomException(e, sys)
         
-    
+class DataSplitter(DataStrategy):
+    def handle_data(self, train_arr: np.ndarray, test_arr:np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        try:
+            logging.info("Splitting training and testing data")
+            X_train = train_arr[:, :-1]
+            X_test = test_arr[:, :-1]
+            y_train = train_arr[:, -1]
+            y_test = test_arr[:, -1]
+
+            return X_train, X_test, y_train, y_test
+        except Exception as e:
+            raise CustomException(e, sys)
+        

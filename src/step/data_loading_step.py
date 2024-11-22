@@ -1,11 +1,12 @@
 from src.exception import CustomException
-from src.components.get_data import GetData
+from src.components.data_loader import GetData
 import pandas as pd
 import sys
 
 from zenml import step
 from typing import Tuple
 from typing_extensions import Annotated
+from src.components.data_loader import GetData
 
 
 @step
