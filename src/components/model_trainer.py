@@ -42,7 +42,7 @@ class ModelTrainer:
                 result[list(models.keys())[i]] = test_score
             
             best_model_score= max(list(sorted(result.values())))
-            logging.info(f"Best model score: {best_model_score}")
+            logging.info(f"Best model score (r2_score): {best_model_score}")
 
             best_model_name = list(result.keys())[list(result.values()).index(best_model_score)]
             logging.info(f"Best model name: {best_model_name}")
