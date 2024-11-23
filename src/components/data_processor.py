@@ -103,4 +103,36 @@ class DataSplitter(DataStrategy):
             return X_train, X_test, y_train, y_test
         except Exception as e:
             raise CustomException(e, sys)
-        
+
+
+class CustomData:
+    def __init__(self, 
+                 study_hours_per_day: float,
+                 extracurricular_hours_per_day: float,
+                 sleep_hours_per_day: float,
+                 social_hours_per_day: float,
+                 physical_activity_hours_per_day: float,
+                 stress_level: str):
+        self.study_hours_per_day = study_hours_per_day
+        self.extracurricular_hours_per_day = extracurricular_hours_per_day
+        self.sleep_hours_per_day = sleep_hours_per_day
+        self.social_hours_per_day = social_hours_per_day
+        self.physical_activity_hours_per_day = physical_activity_hours_per_day
+        self.stress_level = stress_level
+    
+    def get_df(self):
+        try:
+            data = {
+                "Study_Hours_Per_Day": [self.study_hours_per_day],
+                "Extracurricular_Hours_Per_Day": [self.extracurricular_hours_per_day],
+                "Sleep_Hours_Per_Day": [self.sleep_hours_per_day],
+                "Social_Hours_Per_Day": [self.social_hours_per_day],
+                "Physical_Activity_Hours_Per_Day": [self.physical_activity_hours_per_day],
+                "Stress_Level": [self.stress_level]
+            }
+
+            df = pd.DataFrame(data)
+
+            return df
+        except Exception as e:
+            raise CustomException(e, sys)
