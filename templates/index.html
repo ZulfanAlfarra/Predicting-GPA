@@ -5,10 +5,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        .form-container {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        select,
+        input[type="number"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fdfdfd;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Hello bro</h1>
+    <div class="form-container">
+        <H2>Predicting GPA</H2>
+
+        <form action="{{ url_for('predict_data')}}" , method="post">
+            <!-- study_hours_per_day -->
+            <label for="study_hours">Study Hours per Day:</label>
+            <input type="number" , id="study_hours" , name="study_hours" , placeholder="Enter study hours per day" ,
+                required>
+
+            <!-- extracurricular_hours_per_day: float, -->
+            <label for="extracurricular_hours">Extracurricular Hours per Day</label>
+            <input type="number" name="extracurricular_hours" id="extracurricular_hours" ,
+                placeholder="Enter Extracurricular hours per day" , required>
+
+            <!-- sleep_hours_per_day: float, -->
+            <label for="sleep_hours">Sleep Hours per Day</label>
+            <input type="number" name="sleep_hours" id="sleep_hours" , placeholder="Enter sleep hours per day" ,
+                required>
+
+            <!-- social_hours_per_day: float, -->
+            <label for="social_hours">Social Hours per Day</label>
+            <input type="number" name="social_hours" id="social_hours" , placeholder="Enter social hours per day" ,
+                required>
+
+            <!-- physical_activity_hours_per_day: float, -->
+            <label for="physical_hours">Physical Activity Hours Per Day</label>
+            <input type="number" name="physical_hours" id="physical_hours" ,
+                placeholder="Enter physical activity hours per day" , required>
+
+            <!-- stress_level: str -->
+            <label for="stress">Strees Level</label>
+            <select name="stress" id="stress" , required>
+                <option value="" disabled selected>Select strees level</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Low">Low</option>
+                <option value="High">High</option>
+            </select>
+
+            <!-- Submit Button -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    {% if prediction %}
+    <div class="prediction-container">
+        <h2>Prediction GPA Score</h2>
+        <p>{{ prediction }}</p>
+    </div>
+    {% else %}
+    <p>Masukkan data untuk mendapatkan prediksi.</p>
+    {% endif %}
+
 </body>
 
 </html>
